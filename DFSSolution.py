@@ -1,3 +1,5 @@
+from createMaze import createMaze
+
 class DFSSolution:
     def __init__(self, maze):
         """
@@ -15,12 +17,15 @@ class DFSSolution:
         - self.goal: The goal position (bottom-right corner, implicitly (n-1,n-1)).
         - self.path: A list used to store the current path from start to goal.
         - self.visited: A set to keep track of visited nodes, avoiding revisiting nodes and loops.
+        - self.visited_sequence: A list to store the order of visited nodes.
         """
         self.maze = maze
-        self.start = maze[0][0]
-        self.goal = maze[len(maze) - 1][len(maze) - 1]
+        self.start = (0, 0)
+        self.goal = (len(maze) - 1, len(maze) - 1)
         self.path = []  # To store the path to the goal
         self.visited = set()  # To keep track of visited nodes
+        self.visited_sequence = []  # To store the sequence of visited nodes
+        self.total_cost = 0  # To store the total cost of the solution path
 
     def DepthFirstSearch(self, cur=(0, 0)):
         """
@@ -29,15 +34,21 @@ class DFSSolution:
         Parameters:
         - cur: The current cell being explored, represented as a tuple (row, column).
 
-        Returns:
+         Returns:
         - True if a path to the goal is found; False otherwise.
         """
         # Mark the current node as visited and add it to the path
         self.visited.add(cur)
+        self.visited_sequence.append(cur)
         self.path.append(cur)
 
+        # Add cost if the cell has a numeric value
+        cell_value = self.maze[cur[0]][cur[1]]
+        if isinstance(cell_value[0], int):
+            self.total_cost += cell_value[0]
+
         # Base case: If the goal is reached, return True
-        if cur == (len(self.maze) - 1, len(self.maze) - 1):
+        if cur == self.goal:
             return True
 
         # Explore all possible moves from the current cell
@@ -47,8 +58,10 @@ class DFSSolution:
                 if self.DepthFirstSearch(next_move):
                     return True
 
-        # If all moves fail, backtrack by removing the current node from the path
+        # If all moves fail, backtrack by removing the current node from the path and adjusting cost
         self.path.pop()
+        if isinstance(cell_value[0], int):
+            self.total_cost -= cell_value[0]
         return False
 
     def possibleSolution(self, cur):
@@ -92,22 +105,27 @@ class DFSSolution:
         Initiates the Depth-First Search and retrieves the path from start to goal.
 
         Returns:
-        - A list of coordinates representing the path from start to goal if a solution exists.
-        - "No path found" if no solution exists.
+        - A tuple containing:
+          - The path from start to goal if a solution exists.
+          - "No path found" if no solution exists.
+          - Nodes visited in sequence.
+          - Total cost of the solution path.
         """
         if self.DepthFirstSearch():
-            return self.path
+            return self.path, self.visited_sequence, self.total_cost
         else:
-            return "No path found"
+            return "No path found", self.visited_sequence, self.total_cost
 
 
-# Example Usage
-n = 3  # Maze size
-maze = createMaze(n)  # Generate a random maze
+n = 5  # Fixed Maze size to 5x5
+maze = createMaze(n)  # Generate a random maze of size 5x5
 print("Generated Maze:")
 for row in maze:
     print(row)
 
-print("\nDFS Solution Path:")
 dfs = DFSSolution(maze)
-print(dfs.getPath())
+solution, visited_nodes, total_cost = dfs.getPath()
+
+print("\nDFS Solution Path:", solution)
+print("Visited Nodes in Order:", visited_nodes)
+print("Total Cost of Solution Path:", total_cost)
