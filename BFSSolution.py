@@ -25,7 +25,7 @@ class Solution():
             queue += self.possibleSolution(cur)
             visitedNode.append(cur)
             graph[cur] = self.possibleSolution(cur)
-    return graph
+    return graph, visitedNode
   def possibleSolution(self,cur):
     posSol = []
     row, col = cur[0], cur[1]
@@ -49,7 +49,7 @@ class Solution():
     return posSol
   def backtrackPath(self):
     path = []
-    graph = self.BreadthFirstSearch()
+    graph, visitedNode = self.BreadthFirstSearch()
     # it will always be the first parent
     cur = (len(self.maze)-1,len(self.maze)-1)
     while cur != (0,0):
@@ -60,7 +60,7 @@ class Solution():
           break
     path.append((0,0))
     path.reverse()
-    return path
+    return path, visitedNode
 
 '''n = 1
 while n < 10:

@@ -72,9 +72,12 @@ class MazeApp:
 
     def usingBFS(self):
         solver = BFSSolution.Solution(self.maze)
-        self.path = solver.backtrackPath()  # Update the path
+        self.path, visited_nodes = solver.backtrackPath()  # Update the path
         self.displayPath("BFS")
         self.result_label.config(text="BFS Path: Not applicable to BFS")  # You can adjust this message as needed.
+        # Update the result_label with the visited nodes and total cost
+        result_text = f"Visited Nodes: {visited_nodes}"
+        self.result_label.config(text=result_text)
 
     def usingDFS(self):
         solver = DFSSolution(self.maze)
