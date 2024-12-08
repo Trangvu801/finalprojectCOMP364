@@ -106,7 +106,7 @@ class MazeApp:
         # Update the result_label with the visited nodes and total cost
         visited_nodes_count = len(visited_nodes)
         solution_path_count = len(self.path)
-        result_text = f"Visited Nodes: {visited_nodes}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}\nFunction runtime: {end_time - start_time:.10f} seconds"
+        result_text = f"Visited Nodes: {visited_nodes}\nSolution Path: {self.path}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}\nFunction runtime: {end_time - start_time:.10f} seconds"
         self.result_label.config(text=result_text)
 
     def usingAStar(self):
