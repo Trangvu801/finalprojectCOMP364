@@ -4,9 +4,10 @@ import createMaze
 import BFSSolution
 from DFSSolution import DFSSolution
 from AStarSolution import AStarSolution
+import time
 
 class MazeApp:
-    def __init__(self, root, maze_size=5):
+    def __init__(self, root, maze_size):
         self.root = root
         self.maze_size = maze_size
         self.maze = None
@@ -42,7 +43,7 @@ class MazeApp:
 
         self.generate_maze()
 
-        self.reset_button = tk.Button(root, text="Reset", command=self.reset_fields)
+        self.reset_button = tk.Button(root, text="Reset", command=self.reset_fields,height=2, width=20)
         self.reset_button.pack(pady=5)
     def reset_fields(self):
         # Clear any result labels
@@ -81,40 +82,49 @@ class MazeApp:
                 label.grid(row=row, column=col)
 
     def usingBFS(self):
+        start_time = time.time()
         solver = BFSSolution.Solution(self.maze)
         self.path, visited_nodes = solver.backtrackPath()  # Update the path
+        end_time = time.time()
+
         self.displayPath("BFS")
-        self.result_label.config(text="BFS Path: Not applicable to BFS")  # You can adjust this message as needed.
+        #self.result_label.config(text="BFS Path: Not applicable to BFS")  # You can adjust this message as needed.
         # Update the result_label with the visited nodes and total cost
+        #runtime = timeit.timeit("solver.BreadthFirstSearch()", globals=globals(), number=1)  # Run function once
         visited_nodes_count = len(visited_nodes)
         solution_path_count = len(self.path)
-        result_text = f"Visited Nodes: {visited_nodes}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}"
+        result_text = f"Visited Nodes: {visited_nodes}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}\nFunction runtime: {end_time - start_time:.10f} seconds"
         self.result_label.config(text=result_text)
 
     def usingDFS(self):
+        start_time = time.time()
         solver = DFSSolution(self.maze)
         solution_path, visited_nodes, total_cost = solver.getPath()  # Get the result from DFS
+        end_time = time.time()
         self.path = solution_path  # Update path
         self.displayPath("DFS")
+        # Update the result_label with the visited nodes and total cost
         visited_nodes_count = len(visited_nodes)
         solution_path_count = len(self.path)
-        # Update the result_label with the visited nodes and total cost
-        result_text = f"Visited Nodes: {visited_nodes}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}"
+        result_text = f"Visited Nodes: {visited_nodes}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}\nFunction runtime: {end_time - start_time:.10f} seconds"
         self.result_label.config(text=result_text)
 
     def usingAStar(self):
+        start_time = time.time()
         solver = AStarSolution(self.maze)
         solution_path, visited_nodes, total_cost = solver.aStarSearch()  # Get the result from A*
+        end_time = time.time()
         if solution_path == "No path found":
             print("A* Search: No path found.")
             self.path = []  # Ensure path is empty if no solution
         else:
             self.path = solution_path  # Update path
             self.displayPath("A* Search")
+            # Update the result_label with the visited nodes and total cost
             visited_nodes_count = len(visited_nodes)
             solution_path_count = len(self.path)
-            # Update the result_label with the visited nodes and total cost
-            result_text = f"Visited Nodes: {visited_nodes}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}\nTotal Cost: {total_cost}"
+            result_text = f"Visited Nodes: {visited_nodes}\nTotal Cost: {total_cost}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}\nFunction runtime: {end_time - start_time:.10f} seconds"
+            
             self.result_label.config(text=result_text)
 
     def displayPath(self, algo_name):
