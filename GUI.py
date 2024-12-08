@@ -42,7 +42,17 @@ class MazeApp:
 
         self.generate_maze()
 
+        self.reset_button = tk.Button(root, text="Reset", command=self.reset_fields)
+        self.reset_button.pack(pady=5)
+    def reset_fields(self):
+        # Clear any result labels
+        self.result_label.config(text="")
+        # Reset the path to empty
+        self.path = []
+        self.display_maze()#.delete(0, tk.END)
+
     def generate_maze(self):
+        self.result_label.config(text="")
         self.maze = createMaze.createMaze(self.maze_size)
         self.display_maze()
 
