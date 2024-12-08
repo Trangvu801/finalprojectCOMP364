@@ -86,7 +86,9 @@ class MazeApp:
         self.displayPath("BFS")
         self.result_label.config(text="BFS Path: Not applicable to BFS")  # You can adjust this message as needed.
         # Update the result_label with the visited nodes and total cost
-        result_text = f"Visited Nodes: {visited_nodes}"
+        visited_nodes_count = len(visited_nodes)
+        solution_path_count = len(self.path)
+        result_text = f"Visited Nodes: {visited_nodes}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}"
         self.result_label.config(text=result_text)
 
     def usingDFS(self):
@@ -94,8 +96,10 @@ class MazeApp:
         solution_path, visited_nodes, total_cost = solver.getPath()  # Get the result from DFS
         self.path = solution_path  # Update path
         self.displayPath("DFS")
+        visited_nodes_count = len(visited_nodes)
+        solution_path_count = len(self.path)
         # Update the result_label with the visited nodes and total cost
-        result_text = f"Visited Nodes: {visited_nodes}\nTotal Cost: {total_cost}"
+        result_text = f"Visited Nodes: {visited_nodes}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}"
         self.result_label.config(text=result_text)
 
     def usingAStar(self):
@@ -107,8 +111,10 @@ class MazeApp:
         else:
             self.path = solution_path  # Update path
             self.displayPath("A* Search")
+            visited_nodes_count = len(visited_nodes)
+            solution_path_count = len(self.path)
             # Update the result_label with the visited nodes and total cost
-            result_text = f"Visited Nodes: {visited_nodes}\nTotal Cost: {total_cost}"
+            result_text = f"Visited Nodes: {visited_nodes}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}\nTotal Cost: {total_cost}"
             self.result_label.config(text=result_text)
 
     def displayPath(self, algo_name):

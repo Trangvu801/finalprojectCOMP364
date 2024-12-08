@@ -25,6 +25,7 @@ class DFSSolution:
         self.path = []  # To store the path to the goal
         self.visited = set()  # To keep track of visited nodes
         self.visited_sequence = []  # To store the sequence of visited nodes
+        self.total_cost = 0  # To store the total cost of the solution path
 
     def DepthFirstSearch(self, cur=(0, 0)):
         """
@@ -41,6 +42,11 @@ class DFSSolution:
         self.visited_sequence.append(cur)
         self.path.append(cur)
 
+        # Add cost if the cell has a numeric value
+        cell_value = self.maze[cur[0]][cur[1]]
+        if isinstance(cell_value[0], int):
+            self.total_cost += cell_value[0]
+
         # Base case: If the goal is reached, return True
         if cur == self.goal:
             return True
@@ -52,8 +58,10 @@ class DFSSolution:
                 if self.DepthFirstSearch(next_move):
                     return True
 
-        # If all moves fail, backtrack by removing the current node from the path
+        # If all moves fail, backtrack by removing the current node from the path and adjusting cost
         self.path.pop()
+        if isinstance(cell_value[0], int):
+            self.total_cost -= cell_value[0]
         return False
 
     def possibleSolution(self, cur):
@@ -101,31 +109,23 @@ class DFSSolution:
           - The path from start to goal if a solution exists.
           - "No path found" if no solution exists.
           - Nodes visited in sequence.
-          - Total number of visited nodes.
-          - Total length of the solution path.
+          - Total cost of the solution path.
         """
         if self.DepthFirstSearch():
-            total_visited_nodes = len(self.visited_sequence)
-            path_length = len(self.path)
-            return self.path, self.visited_sequence, total_visited_nodes, path_length
+            return self.path, self.visited_sequence, self.total_cost
         else:
-            total_visited_nodes = len(self.visited_sequence)
-            return "No path found", self.visited_sequence, total_visited_nodes, 0
+            return "No path found", self.visited_sequence, self.total_cost
 
 
-# Main Program
 n = 5  # Fixed Maze size to 5x5
 maze = createMaze(n)  # Generate a random maze of size 5x5
 print("Generated Maze:")
 for row in maze:
     print(row)
 
-# Solve the maze using DFS
 dfs = DFSSolution(maze)
-solution, visited_nodes, total_visited_nodes, path_length = dfs.getPath()
+solution, visited_nodes, total_cost = dfs.getPath()
 
-# Print results
 print("\nDFS Solution Path:", solution)
 print("Visited Nodes in Order:", visited_nodes)
-print("Total Number of Visited Nodes:", total_visited_nodes)
-print("Total Length of Solution Path:", path_length)
+
