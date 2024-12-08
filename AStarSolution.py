@@ -100,12 +100,23 @@ class AStarSolution:
 
 
 # Example Usage
-n = 5  # Fixed Maze size to 5x5
+'''n = 5  # Fixed Maze size to 5x5
 maze = createMaze(n)  # Generate a random maze of size 5x5
 print("Generated Maze:")
 for row in maze:
-    print(row)
+    print(row)'''
 
+maze = [[[0], ['#'], ['#'], ['#'], ['#']],
+
+[[4], [3], [2], [10], [4]],
+
+[[4], [4], [4], ['#'], [4, (3, 4)]],
+
+[['#'], [4], [4, (2, 1)], ['#'], [4]],
+
+[[4, (1, 0)], [4], [3], [4], 'G']]
+# BFS: [(0, 0), (1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (2, 4), (3, 4), (4, 4)]
+# AS: [(0, 0), (1, 0), (1, 1), (1, 2), (2, 2), (3, 2), (4, 2), (4, 3), (4, 4)]
 print("\nA* Solution Path:")
 astar = AStarSolution(maze)
 solution_path, visited_nodes, total_cost = astar.aStarSearch()

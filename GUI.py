@@ -41,7 +41,17 @@ class MazeApp:
         self.result_label = tk.Label(root, text="", font=("Helvetica", 12), anchor="w", justify="left")
         self.result_label.pack(pady=10)
 
-        self.generate_maze()
+        #self.generate_maze()
+        self.maze = maze = [[[0], ['#'], ['#'], ['#'], ['#']],
+
+                            [[4], [3], [2], [10], [4]],
+
+                            [[4], [4], [4], ['#'], [4, (3, 4)]],
+
+                            [['#'], [4], [4, (2, 1)], ['#'], [4]],
+
+                            [[4, (1, 0)], [4], [3], [4], 'G']]
+        self.display_maze()                    
 
         self.reset_button = tk.Button(root, text="Reset", command=self.reset_fields,height=2, width=20)
         self.reset_button.pack(pady=5)
@@ -72,15 +82,16 @@ class MazeApp:
                 elif len(value) == 1 and isinstance(value[0], int):
                     color = "red" if row == 0 and col == 0 else "white"
                     text = "S" if row == 0 and col == 0 else str(value[0])
+                    
                 elif len(value) > 1 and isinstance(value[1], tuple):
                     color = "yellow"
-                    text = str(value[1])
+                    text = str(value[1])+"\n"+str(value[0])
                 else:
                     color = "white"
                     text = ""
                 label = tk.Label(self.grid_frame, text=text, font=("Helvetica", 12), bg=color, width=15, height=5, borderwidth=2, relief="solid")
                 label.grid(row=row, column=col)
-
+        
     def usingBFS(self):
         start_time = time.time()
         solver = BFSSolution.Solution(self.maze)
@@ -106,7 +117,7 @@ class MazeApp:
         # Update the result_label with the visited nodes and total cost
         visited_nodes_count = len(visited_nodes)
         solution_path_count = len(self.path)
-        result_text = f"Visited Nodes: {visited_nodes}\nSolution Path: {self.path}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}\nFunction runtime: {end_time - start_time:.10f} seconds"
+        result_text = f"Visited Nodes: {visited_nodes}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}\nFunction runtime: {end_time - start_time:.10f} seconds"
         self.result_label.config(text=result_text)
 
     def usingAStar(self):
@@ -146,13 +157,15 @@ class MazeApp:
                 text = str(value[0])
             elif len(value) > 1 and isinstance(value[1], tuple):
                 if pos + 1 < len(self.path) and self.path[pos + 1] == value[1]:
-                    text = f"Teleport to\n{value[1]}"
+                    text = f"Teleport to\n{value[1]}\n{value[0]}"
                 else:
-                    text = "No teleport"
-
+                    text = f"No teleport\n{value[0]}"
+        
             label = tk.Label(self.grid_frame, text=text, font=("Helvetica", 12), bg=color, width=15, height=5, borderwidth=2, relief="solid")
             label.grid(row=row, column=col)
-
+            self.root.update()  # Update the GUI to reflect changes
+            time.sleep(0.5) 
+            
 
 if __name__ == "__main__":
     root = tk.Tk()

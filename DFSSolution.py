@@ -128,4 +128,4 @@ solution, visited_nodes, total_cost = dfs.getPath()
 
 print("\nDFS Solution Path:", solution)
 print("Visited Nodes in Order:", visited_nodes)
-
+print("Total Cost of Solution Path:", total_cost)

@@ -77,3 +77,7 @@ while n < 10:
   n += 1   
   
   #EX: [(0, 0), (0, 1), (1, 2), (2, 2), (2, 3), (3, 3)]'''
+maze = createMaze.createMaze(5)
+print("\n" + "Solution: " + "\n")
+s = Solution(maze)
+print(s.backtrackPath())
