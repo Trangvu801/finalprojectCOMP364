@@ -4,6 +4,7 @@ import createMaze
 import BFSSolution
 from DFSSolution import DFSSolution
 from AStarSolution import AStarSolution
+from EuclideanAStarSolution import EuclideanAStarSolution
 import time
 
 class MazeApp:
@@ -36,6 +37,9 @@ class MazeApp:
 
         self.AStar_button = tk.Button(self.solve_buttons_frame, text="A* Search", command=self.usingAStar, width=20)
         self.AStar_button.pack(side=tk.LEFT, padx=5)
+
+        self.EuclideanAStar_button = tk.Button(self.solve_buttons_frame, text="Euclidean A* Search", command=self.usingEuclideanAStar, width=20)
+        self.EuclideanAStar_button.pack(side=tk.LEFT, padx=5)
 
         # Label for displaying results (visited nodes and total cost)
         self.result_label = tk.Label(root, text="", font=("Helvetica", 12), anchor="w", justify="left")
@@ -131,6 +135,24 @@ class MazeApp:
         else:
             self.path = solution_path  # Update path
             self.displayPath("A* Search")
+            # Update the result_label with the visited nodes and total cost
+            visited_nodes_count = len(visited_nodes)
+            solution_path_count = len(self.path)
+            result_text = f"Visited Nodes: {visited_nodes}\nTotal Cost: {total_cost}\nTotal Length of Visited Nodes: {visited_nodes_count}\nTotal Length of Solution Path: {solution_path_count}\nFunction runtime: {end_time - start_time:.10f} seconds"
+            
+            self.result_label.config(text=result_text)
+    
+    def usingEuclideanAStar(self):
+        start_time = time.time()
+        solver = EuclideanAStarSolution(self.maze)
+        solution_path, visited_nodes, total_cost = solver.aStarSearch()  # Get the result from Euclidean A*
+        end_time = time.time()
+        if solution_path == "No path found":
+            print("Euclidean A* Search: No path found.")
+            self.path = []  # Ensure path is empty if no solution
+        else:
+            self.path = solution_path  # Update path
+            self.displayPath("Euclidean A* Search")
             # Update the result_label with the visited nodes and total cost
             visited_nodes_count = len(visited_nodes)
             solution_path_count = len(self.path)
