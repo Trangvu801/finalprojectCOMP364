@@ -29,9 +29,9 @@ def createMaze(n):
           else:
             if (row,col) in teleVisited:
               maze[row][col] = [random.randint(0,10)]
-            if row-1 >= 0 and col+1 < n:
-              if maze[row-1][col+1][0] == "#":
-                maze[row][col] = [random.randint(0,10)]
+            #if row-1 >= 0 and col+1 < n:
+              #if maze[row-1][col+1][0] == "#":
+                #maze[row][col] = [random.randint(0,10)]
 
   # goal location
   maze[n-1][n-1] = "G"
